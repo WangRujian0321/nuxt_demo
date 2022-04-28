@@ -1,0 +1,16 @@
+/* 路由统一动效 */
+/* 入 */
+.page-enter-active, .page-leave-active{
+  transition: opacity .5s;
+}
+/* 退 */
+.page-enter, .page-leave{
+  opacity: 0;
+}
+
+.testAnimation-enter-active, .testAnimation-leave-active{
+  transition: .5s ease all;
+}
+.testAnimation-enter, .testAnimation-leave{
+  margin-left: -1000px;
+}
