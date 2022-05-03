@@ -7,7 +7,18 @@
     </div>
     <div>
       <h3>跨域资源</h3>
-      <p>{{subtitle}}</p>
+      <p>{{home}}</p>
+    </div>
+    <div>
+      <h4>vuex操作</h4>
+      <button @click="getStore">111</button>
+    </div>
+    <div>
+      <h4>computed</h4>
+      <p>主模块bNav：{{bNav}}</p>
+      <p>主模块bLoading：{{bLoading}}</p>
+      <p>主模块GetNav{{getNav}}</p>
+      <p>user中的data数据{{data}}</p>
     </div>
   </div>
 </template>
@@ -15,29 +26,58 @@
 .container {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
   justify-content: center;
   align-content: center;
 }
 </style>
 <script>
 // import data from "~/static/data/list.json"
+import {mapActions, mapGetters, mapState, mapMutations} from 'vuex'
 export default {
   name: 'IndexPage',
+  data(){
+    return {
+      subtitle:null
+    }
+  },
   async asyncData({$axios}) {
     let res = await $axios({url: '/data/list.json'});
     // console.log('res',res.data)
-    let res1 = await $axios({url:'/api/test.json'});
-    console.log('res', res.data);
-    console.log('res1', res1.data)
+    // let res1 = await $axios({url:'/api/test.json'});
+    // console.log('res', res.data);
+    // console.log('res1', res1.data)
     return {
       title:res.data.title,
-      subtitle:res1.data.title
+      // subtitle:res1.data.title
     }
   },
-  async fetch({$axios}){
+  async fetch({$axios, store, error}){
     // let res = await $axios({url: '/data/list.json'});
     // console.log('res',res.data)
+    let res1 = await $axios({url:'/api/test.json'});
+    console.log(res1.data.data)
+    res1.data && store.commit('home/M_UPDATE_HOME', {err:0, data:res1.data.data});
+    // return {
+    //   subtitle:res1.data.title
+    // }
+  },
+  methods:{
+    getStore(){
+      // 编程式访问vuex
+      // 发出action请求给user模块
+      // this.$store.dispatch('user/A_UPDATE_USER', {err:0, msg:"登陆成功", token:'假token', data:{title: "user模块的actions提交来的数据"}})
+      // this.$store.commit('user/M_UPDATE_USER', {err:0, msg:"登陆成功", token:'假token', data:{title: "组件传递过来的数据"}})
+      // this.A_UPDATE_USER({err:0, msg:"登陆成功", token:'假token', data:{title: "user模块的actions提交来的数据0012"}})
+      this.M_UPDATE_USER({err:0, msg:"登陆成功", token:'假token', data:{title: "组件传递过来的数据0011"}})
+    },
+    ...mapActions('user', ['A_UPDATE_USER']),
+    ...mapMutations('user', ["M_UPDATE_USER"])
+  },
+  computed:{
+    ...mapGetters(['getNav']),
+    ...mapState(['bNav', 'bLoading']),
+    ...mapState('user', ['data']),
+    ...mapState({home:state=>state.home.data}),
   }
 }
 //   // SSR 服务端运行的钩子，不能获得window对象，服务端的this指向undifined，但能够获得服务端上下文context

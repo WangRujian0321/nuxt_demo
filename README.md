@@ -19,3 +19,11 @@ nuxt.config.js -> 匹配布局 -> 匹配页面
 validate
 参数校验，校验失败，则会自动跳转到错误页面
 
+
+vuex使用方式
+模块方式 store目录下每个js文件都会被转换为状态树，index是根模块
+
+classic方式 store/index.js创建vuex.store方法 不建议使用
+
+
+
